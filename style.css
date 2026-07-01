@@ -872,7 +872,7 @@ body {
   box-shadow: -10px 0 40px rgba(15, 23, 42, 0.08);
   border-left: 1px solid var(--border-color);
   z-index: 1500;
-  transition: right 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+  transition: right 0.45s cubic-bezier(0.16, 1, 0.3, 1);
   display: flex;
   flex-direction: column;
 }
@@ -1070,7 +1070,7 @@ body {
   box-shadow: -10px 0 40px rgba(15, 23, 42, 0.08);
   border-left: 1px solid var(--border-color);
   z-index: 1500;
-  transition: right 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+  transition: right 0.45s cubic-bezier(0.16, 1, 0.3, 1);
   display: flex;
   flex-direction: column;
 }
@@ -1357,7 +1357,7 @@ body {
 @keyframes fadeInUp {
   from {
     opacity: 0;
-    transform: translateY(12px);
+    transform: translateY(8px); /* Movimento mais sutil evita efeito truncado */
   }
   to {
     opacity: 1;
@@ -1366,7 +1366,7 @@ body {
 }
 
 .animate-fade-in-up {
-  animation: fadeInUp 0.5s cubic-bezier(0.16, 1, 0.3, 1) both;
+  animation: fadeInUp 0.45s cubic-bezier(0.16, 1, 0.3, 1) both;
 }
 
 /* Transições Suaves nos Cards */
@@ -1390,7 +1390,7 @@ body {
 
 /* Desfoque suave de profundidade ao abrir as gavetas */
 .app-content {
-  transition: filter 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+  transition: filter 0.45s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 body:has(.backlog-drawer.open) .app-content,
