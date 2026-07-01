@@ -470,9 +470,19 @@ body {
   box-shadow: var(--box-shadow);
   border-radius: var(--border-radius-sm);
   border: 1px solid var(--border-color);
-  z-index: 100;
-  overflow: hidden;
+  z-index: 1500;
   margin-top: 5px;
+}
+
+/* Ponte transparente de hover para evitar que o menu suma ao mover o mouse */
+.export-dropdown-content::before {
+  content: "";
+  position: absolute;
+  top: -15px;
+  left: 0;
+  right: 0;
+  height: 15px;
+  background-color: transparent;
 }
 
 .export-dropdown-content a {
