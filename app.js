@@ -878,152 +878,180 @@ function showError(message) {
 
 // Exportar Grade do Calendário como PNG de alta qualidade
 function exportAsImage() {
-  const targetArea = document.getElementById("calendar-export-area");
-  if (!targetArea) return;
-
-  // Feedback de exportando
   const exportBtn = document.querySelector(".export-dropdown > .flow-btn");
   const btnText = exportBtn ? exportBtn.querySelector(".btn-text") : null;
   const iconLeft = exportBtn ? exportBtn.querySelector(".icon-left") : null;
   const iconRight = exportBtn ? exportBtn.querySelector(".icon-right") : null;
 
-  if (exportBtn) {
-    exportBtn.disabled = true;
-    if (btnText) btnText.textContent = "Exportando...";
-    if (iconLeft) iconLeft.classList.add("spinner");
-    if (iconRight) iconRight.classList.add("spinner");
-  }
-
-  html2canvas(targetArea, {
-    scale: 2, // Alta qualidade
-    useCORS: true,
-    backgroundColor: "#ffffff", // Fundo branco estilo Light Mode Referência
-    logging: false,
-    onclone: (clonedDoc) => {
-      // Ocultar controles de navegação na imagem
-      const clonedControls = clonedDoc.querySelector(".calendar-navigation-controls");
-      if (clonedControls) clonedControls.style.display = "none";
-      
-      const clonedContainer = clonedDoc.getElementById("calendar-export-area");
-      if (clonedContainer) {
-        clonedContainer.style.width = "1200px";
-        clonedContainer.style.height = "800px"; // Altura estática para evitar travamentos no clone flex/grid
-        clonedContainer.style.borderRadius = "0";
-        clonedContainer.style.border = "none";
-      }
-
-      const clonedSheet = clonedDoc.querySelector(".calendar-sheet");
-      if (clonedSheet) {
-        clonedSheet.style.height = "700px";
-        clonedSheet.style.display = "flex";
-        clonedSheet.style.flexDirection = "column";
-      }
-
-      const clonedGrid = clonedDoc.getElementById("calendar-days-grid");
-      if (clonedGrid) {
-        clonedGrid.style.height = "650px";
-        clonedGrid.style.gridTemplateRows = "repeat(6, 105px)"; // Fixando altura de linha no grid clone
-      }
+  try {
+    if (typeof html2canvas === "undefined") {
+      throw new Error("A biblioteca de imagem (html2canvas) não foi carregada corretamente no navegador.");
     }
-  }).then(canvas => {
+
+    const targetArea = document.getElementById("calendar-export-area");
+    if (!targetArea) return;
+
     if (exportBtn) {
-      exportBtn.disabled = false;
-      if (btnText) btnText.textContent = "Exportar";
-      if (iconLeft) iconLeft.classList.remove("spinner");
-      if (iconRight) iconRight.classList.remove("spinner");
+      exportBtn.disabled = true;
+      if (btnText) btnText.textContent = "Exportando...";
+      if (iconLeft) iconLeft.classList.add("spinner");
+      if (iconRight) iconRight.classList.add("spinner");
     }
 
-    const link = document.createElement("a");
-    const monthTitle = document.getElementById("calendar-month-year").textContent.replace(" ", "_").toLowerCase();
-    link.download = `calendario_postagem_${monthTitle}.png`;
-    link.href = canvas.toDataURL("image/png");
-    link.click();
-  }).catch(err => {
-    console.error("Erro ao gerar imagem:", err);
-    alert("Ocorreu um erro ao exportar o calendário como imagem.");
-    if (exportBtn) {
-      exportBtn.disabled = false;
-      if (btnText) btnText.textContent = "Exportar";
-      if (iconLeft) iconLeft.classList.remove("spinner");
-      if (iconRight) iconRight.classList.remove("spinner");
-    }
-  });
-}
-
-// Exportar Calendário como arquivo PDF nativo (sem abrir janela de impressão)
-function exportAsPdf() {
-  const targetArea = document.getElementById("calendar-export-area");
-  if (!targetArea) return;
-
-  // Feedback de exportando
-  const exportBtn = document.querySelector(".export-dropdown > .flow-btn");
-  const btnText = exportBtn ? exportBtn.querySelector(".btn-text") : null;
-  const iconLeft = exportBtn ? exportBtn.querySelector(".icon-left") : null;
-  const iconRight = exportBtn ? exportBtn.querySelector(".icon-right") : null;
-
-  if (exportBtn) {
-    exportBtn.disabled = true;
-    if (btnText) btnText.textContent = "Gerando PDF...";
-    if (iconLeft) iconLeft.classList.add("spinner");
-    if (iconRight) iconRight.classList.add("spinner");
-  }
-
-  const monthTitle = document.getElementById("calendar-month-year").textContent.replace(" ", "_").toLowerCase();
-  
-  // Configuração do html2pdf.js
-  const opt = {
-    margin: 10,
-    filename: `calendario_postagem_${monthTitle}.pdf`,
-    image: { type: 'jpeg', quality: 0.98 },
-    html2canvas: { 
-      scale: 2, 
+    html2canvas(targetArea, {
+      scale: 2, // Alta qualidade
       useCORS: true,
-      backgroundColor: '#ffffff',
+      backgroundColor: "#ffffff", // Fundo branco estilo Light Mode Referência
+      logging: false,
       onclone: (clonedDoc) => {
-        // Ocultar controles de navegação no PDF
+        // Ocultar controles de navegação na imagem
         const clonedControls = clonedDoc.querySelector(".calendar-navigation-controls");
         if (clonedControls) clonedControls.style.display = "none";
         
         const clonedContainer = clonedDoc.getElementById("calendar-export-area");
         if (clonedContainer) {
           clonedContainer.style.width = "1200px";
-          clonedContainer.style.height = "800px"; // Altura fixa
+          clonedContainer.style.height = "800px"; // Altura estática para evitar travamentos no clone flex/grid
           clonedContainer.style.borderRadius = "0";
           clonedContainer.style.border = "none";
         }
-        
+
         const clonedSheet = clonedDoc.querySelector(".calendar-sheet");
         if (clonedSheet) {
           clonedSheet.style.height = "700px";
           clonedSheet.style.display = "flex";
           clonedSheet.style.flexDirection = "column";
         }
-        
+
         const clonedGrid = clonedDoc.getElementById("calendar-days-grid");
         if (clonedGrid) {
           clonedGrid.style.height = "650px";
-          clonedGrid.style.gridTemplateRows = "repeat(6, 105px)";
+          clonedGrid.style.gridTemplateRows = "repeat(6, 105px)"; // Fixando altura de linha no grid clone
         }
       }
-    },
-    jsPDF: { unit: 'mm', format: 'a4', orientation: 'landscape' }
-  };
+    }).then(canvas => {
+      if (exportBtn) {
+        exportBtn.disabled = false;
+        if (btnText) btnText.textContent = "Exportar";
+        if (iconLeft) iconLeft.classList.remove("spinner");
+        if (iconRight) iconRight.classList.remove("spinner");
+      }
 
-  html2pdf().set(opt).from(targetArea).save().then(() => {
+      const link = document.createElement("a");
+      const monthTitle = document.getElementById("calendar-month-year").textContent.replace(" ", "_").toLowerCase();
+      link.download = `calendario_postagem_${monthTitle}.png`;
+      link.href = canvas.toDataURL("image/png");
+      link.click();
+    }).catch(err => {
+      console.error("Erro ao gerar imagem:", err);
+      alert("Ocorreu um erro ao exportar o calendário como imagem.");
+      if (exportBtn) {
+        exportBtn.disabled = false;
+        if (btnText) btnText.textContent = "Exportar";
+        if (iconLeft) iconLeft.classList.remove("spinner");
+        if (iconRight) iconRight.classList.remove("spinner");
+      }
+    });
+  } catch (err) {
+    console.error("Erro síncrono no PNG:", err);
+    alert(err.message || "Não foi possível iniciar a exportação para imagem.");
     if (exportBtn) {
       exportBtn.disabled = false;
       if (btnText) btnText.textContent = "Exportar";
       if (iconLeft) iconLeft.classList.remove("spinner");
       if (iconRight) iconRight.classList.remove("spinner");
     }
-  }).catch(err => {
-    console.error("Erro ao gerar PDF:", err);
-    alert("Ocorreu um erro ao exportar o calendário como PDF.");
+  }
+}
+
+// Exportar Calendário como arquivo PDF nativo (sem abrir janela de impressão)
+function exportAsPdf() {
+  const exportBtn = document.querySelector(".export-dropdown > .flow-btn");
+  const btnText = exportBtn ? exportBtn.querySelector(".btn-text") : null;
+  const iconLeft = exportBtn ? exportBtn.querySelector(".icon-left") : null;
+  const iconRight = exportBtn ? exportBtn.querySelector(".icon-right") : null;
+
+  try {
+    if (typeof html2pdf === "undefined") {
+      throw new Error("A biblioteca de PDF (html2pdf.js) não foi carregada corretamente no navegador.");
+    }
+
+    const targetArea = document.getElementById("calendar-export-area");
+    if (!targetArea) return;
+
+    if (exportBtn) {
+      exportBtn.disabled = true;
+      if (btnText) btnText.textContent = "Gerando PDF...";
+      if (iconLeft) iconLeft.classList.add("spinner");
+      if (iconRight) iconRight.classList.add("spinner");
+    }
+
+    const monthTitle = document.getElementById("calendar-month-year").textContent.replace(" ", "_").toLowerCase();
+    
+    // Configuração do html2pdf.js
+    const opt = {
+      margin: 10,
+      filename: `calendario_postagem_${monthTitle}.pdf`,
+      image: { type: 'jpeg', quality: 0.98 },
+      html2canvas: { 
+        scale: 2, 
+        useCORS: true,
+        backgroundColor: '#ffffff',
+        onclone: (clonedDoc) => {
+          // Ocultar controles de navegação no PDF
+          const clonedControls = clonedDoc.querySelector(".calendar-navigation-controls");
+          if (clonedControls) clonedControls.style.display = "none";
+          
+          const clonedContainer = clonedDoc.getElementById("calendar-export-area");
+          if (clonedContainer) {
+            clonedContainer.style.width = "1200px";
+            clonedContainer.style.height = "800px"; // Altura fixa
+            clonedContainer.style.borderRadius = "0";
+            clonedContainer.style.border = "none";
+          }
+          
+          const clonedSheet = clonedDoc.querySelector(".calendar-sheet");
+          if (clonedSheet) {
+            clonedSheet.style.height = "700px";
+            clonedSheet.style.display = "flex";
+            clonedSheet.style.flexDirection = "column";
+          }
+          
+          const clonedGrid = clonedDoc.getElementById("calendar-days-grid");
+          if (clonedGrid) {
+            clonedGrid.style.height = "650px";
+            clonedGrid.style.gridTemplateRows = "repeat(6, 105px)";
+          }
+        }
+      },
+      jsPDF: { unit: 'mm', format: 'a4', orientation: 'landscape' }
+    };
+
+    html2pdf().set(opt).from(targetArea).save().then(() => {
+      if (exportBtn) {
+        exportBtn.disabled = false;
+        if (btnText) btnText.textContent = "Exportar";
+        if (iconLeft) iconLeft.classList.remove("spinner");
+        if (iconRight) iconRight.classList.remove("spinner");
+      }
+    }).catch(err => {
+      console.error("Erro ao gerar PDF:", err);
+      alert("Ocorreu um erro ao exportar o calendário como PDF.");
+      if (exportBtn) {
+        exportBtn.disabled = false;
+        if (btnText) btnText.textContent = "Exportar";
+        if (iconLeft) iconLeft.classList.remove("spinner");
+        if (iconRight) iconRight.classList.remove("spinner");
+      }
+    });
+  } catch (err) {
+    console.error("Erro síncrono no PDF:", err);
+    alert(err.message || "Não foi possível iniciar a exportação para PDF.");
     if (exportBtn) {
       exportBtn.disabled = false;
       if (btnText) btnText.textContent = "Exportar";
       if (iconLeft) iconLeft.classList.remove("spinner");
       if (iconRight) iconRight.classList.remove("spinner");
     }
-  });
+  }
 }
