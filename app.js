@@ -486,9 +486,10 @@ function renderCalendar() {
     // Buscar posts do dia
     const dayPosts = filteredPosts.filter(p => p.dataString === cellDateStr);
 
-    dayPosts.forEach(post => {
+    dayPosts.forEach((post, postIdx) => {
       const eventEl = document.createElement("div");
-      eventEl.classList.add("calendar-event", getCssClassByTipo(post.tipo));
+      eventEl.classList.add("calendar-event", getCssClassByTipo(post.tipo), "animate-fade-in-up");
+      eventEl.style.animationDelay = `${postIdx * 45}ms`;
       
       // Ícone baseado na plataforma ou formato (opcional) - Exibe Horário se houver
       const timePrefix = post.horario ? `${post.horario} • ` : "";
@@ -538,9 +539,10 @@ function renderBacklog() {
     return;
   }
 
-  backlogPosts.forEach(post => {
+  backlogPosts.forEach((post, index) => {
     const card = document.createElement("div");
-    card.classList.add("post-card", getCssClassByTipo(post.tipo));
+    card.classList.add("post-card", getCssClassByTipo(post.tipo), "animate-fade-in-up");
+    card.style.animationDelay = `${index * 55}ms`;
 
     // Elemento interno do cartão - Mostra a aba de origem no cabeçalho
     card.innerHTML = `

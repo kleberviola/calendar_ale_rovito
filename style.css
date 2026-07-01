@@ -1352,6 +1352,55 @@ body {
 }
 
 /* ==========================================================================
+   Animações de Entrada Fluidas (Estilo Framer Motion)
+   ========================================================================== */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-fade-in-up {
+  animation: fadeInUp 0.5s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+/* Transições Suaves nos Cards */
+.calendar-event {
+  transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.3s ease, border-color 0.3s ease !important;
+}
+
+.calendar-event:hover {
+  transform: translateY(-2px) scale(1.02) !important;
+  box-shadow: 0 4px 12px rgba(15, 23, 42, 0.08) !important;
+}
+
+.post-card {
+  transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.3s ease, border-color 0.3s ease !important;
+}
+
+.post-card:hover {
+  transform: translateY(-4px) scale(1.01) !important;
+  box-shadow: var(--box-shadow-hover) !important;
+}
+
+/* Desfoque suave de profundidade ao abrir as gavetas */
+.app-content {
+  transition: filter 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+body:has(.backlog-drawer.open) .app-content,
+body:has(.config-panel.open) .app-content {
+  filter: blur(2px) grayscale(15%);
+  pointer-events: none; /* Bloqueia cliques fora da gaveta enquanto ela estiver aberta */
+}
+
+
+/* ==========================================================================
    ESTILOS DE IMPRESSÃO (@media print) - Exportação para PDF
    ========================================================================== */
 @media print {
