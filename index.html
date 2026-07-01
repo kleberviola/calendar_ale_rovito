@@ -1,0 +1,319 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Calendário de Postagens - Alê Rovito</title>
+  <link rel="stylesheet" href="style.css">
+  <!-- Google Fonts: Inter para tipografia limpa e moderna -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <!-- html2canvas para exportação de imagem -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js" integrity="sha512-BNaRQnYJYiPSqHHDb58B0yaPfYLjYpdxdk4OMXZvyQPArYLc07tq5BYwLeVeNStQHZOQWDRC5ADvRq8DRVPWwA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+  <!-- SheetJS (Opcional, mantida por compatibilidade no cabeçalho) -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js" integrity="sha512-r22gChDnGzcbCl19qqVq2oK60Uun1ndhhpD7F12/5hVlhHhpfReK1g8811K9V5aHeeQk4Jg4ZpW62sP1E2a2mA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+</head>
+<body>
+
+  <!-- Configuração da Planilha (Painel Lateral Retrátil) -->
+  <div id="config-panel" class="config-panel collapsed">
+    <div class="config-header">
+      <h3>Configurações de Integração</h3>
+      <button id="close-config-btn" class="icon-btn">&times;</button>
+    </div>
+    <div class="config-body">
+      <p>Configure a planilha do Google Sheets que fornece as postagens.</p>
+      <div class="input-group">
+        <label for="sheet-url-input">URL da Planilha:</label>
+        <input type="text" id="sheet-url-input" placeholder="https://docs.google.com/spreadsheets/d/.../edit...">
+      </div>
+      <div class="input-group" style="margin-top: 12px;">
+        <label for="sheet-tabs-input">Abas a importar (separadas por vírgula):</label>
+        <input type="text" id="sheet-tabs-input" placeholder="Reserva SC, 10 Anos">
+      </div>
+      <button id="save-config-btn" class="primary-btn" style="margin-top: 15px; width: 100%;">Salvar e Sincronizar</button>
+      
+      <div class="instructions">
+        <h4>Ajuda rápido:</h4>
+        <ol>
+          <li>Compartilhe sua planilha como <strong>Leitor</strong> para <strong>Qualquer pessoa com o link</strong>.</li>
+          <li>Cole a URL completa no campo acima.</li>
+          <li>Especifique os nomes exatos das abas que deseja sincronizar no calendário.</li>
+        </ol>
+      </div>
+    </div>
+  </div>
+
+  <!-- Gaveta Lateral Retrátil: Banco de Ideias (Backlog) -->
+  <div id="backlog-drawer" class="backlog-drawer">
+    <div class="drawer-header">
+      <div class="drawer-header-left">
+        <h2>Banco de Ideias</h2>
+        <span class="badge-count" id="backlog-count">0 posts</span>
+      </div>
+      <button id="close-drawer-btn" class="close-btn">&times;</button>
+    </div>
+    <div class="drawer-body">
+      <p class="drawer-description">Postagens planejadas na planilha que ainda não possuem uma data definida.</p>
+      <div class="backlog-list" id="backlog-list">
+        <div class="empty-state">
+          Nenhuma postagem pendente no momento.
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Layout Principal do App -->
+  <div class="app-layout">
+    
+    <!-- BARRA LATERAL ESQUERDA (Estilo Referência) -->
+    <aside class="app-sidebar">
+      <div class="sidebar-top">
+        <!-- Logo e Título -->
+        <div class="sidebar-logo">
+          <div class="logo-box">
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="9" rx="1"></rect><rect x="14" y="3" width="7" height="5" rx="1"></rect><rect x="14" y="12" width="7" height="9" rx="1"></rect><rect x="3" y="16" width="7" height="5" rx="1"></rect></svg>
+          </div>
+          <span class="logo-text">Alê Rovito</span>
+        </div>
+        
+        <!-- Menus de Navegação -->
+        <nav class="sidebar-nav">
+          <span class="nav-section-title">Menu Principal</span>
+          
+          <a href="#" id="menu-calendar" class="nav-item active">
+            <span class="nav-icon">
+              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg>
+            </span>
+            <span class="nav-label">Calendário</span>
+          </a>
+          
+          <a href="#" id="menu-backlog" class="nav-item">
+            <span class="nav-icon">
+              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline></svg>
+            </span>
+            <span class="nav-label">Banco de Ideias</span>
+            <span class="nav-badge" id="menu-backlog-badge">0</span>
+          </a>
+          
+          <a href="#" id="menu-config" class="nav-item">
+            <span class="nav-icon">
+              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"></circle><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path></svg>
+            </span>
+            <span class="nav-label">Configurações</span>
+          </a>
+        </nav>
+      </div>
+      
+      <!-- Rodapé do Perfil -->
+      <div class="sidebar-profile">
+        <div class="profile-avatar">
+          <div class="avatar-circle">AR</div>
+        </div>
+        <div class="profile-info">
+          <span class="profile-name">Alê Rovito</span>
+          <span class="profile-role">Criador de Conteúdo</span>
+        </div>
+      </div>
+    </aside>
+
+    <!-- ÁREA PRINCIPAL DE CONTEÚDO (Estilo Referência) -->
+    <main class="app-content">
+      
+      <!-- Cabeçalho de Navegação Interno -->
+      <header class="content-header">
+        <div class="breadcrumb">
+          <span>Alê Rovito</span>
+          <span class="separator">&gt;</span>
+          <span class="active">Programação</span>
+        </div>
+        
+        <div class="header-right-actions">
+          <div class="sync-status">
+            <span class="status-dot green"></span>
+            <span id="sync-time-text">Sincronizado</span>
+          </div>
+          
+          <button id="refresh-btn" class="flow-btn group" title="Atualizar dados em tempo real">
+            <svg class="icon-left stroke-white" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="23 4 23 10 17 10"></polyline><polyline points="1 20 1 14 7 14"></polyline><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"></path></svg>
+            <span class="btn-text">Atualizar</span>
+            <span class="circle-bg"></span>
+            <svg class="icon-right" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="23 4 23 10 17 10"></polyline><polyline points="1 20 1 14 7 14"></polyline><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"></path></svg>
+          </button>
+          
+          <div class="export-dropdown">
+            <button class="flow-btn group dropdown-toggle">
+              <svg class="icon-left stroke-white" xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
+              <span class="btn-text">Exportar</span>
+              <span class="circle-bg"></span>
+              <svg class="icon-right" xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
+            </button>
+            <div class="export-dropdown-content">
+              <a href="#" id="export-png-btn">
+                <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect><circle cx="8.5" cy="8.5" r="1.5"></circle><polyline points="21 15 16 10 5 21"></polyline></svg>
+                Salvar como Imagem (PNG)
+              </a>
+              <a href="#" id="export-pdf-btn">
+                <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line></svg>
+                Imprimir / PDF
+              </a>
+            </div>
+          </div>
+        </div>
+      </header>
+
+      <!-- Painel de Filtros e Busca (Estilo Referência com pílulas) -->
+      <section class="control-panel">
+        <div class="search-wrapper">
+          <svg class="search-glass" xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+          <input type="text" id="search-input" placeholder="Pesquisar legenda, ambiente...">
+        </div>
+
+        <div class="filters-chips">
+          <span class="chip-label">Filtros Rápidos:</span>
+          
+          <!-- Filtro de Ambiente -->
+          <div class="select-chip-container">
+            <select id="filter-ambiente" class="chip-select">
+              <option value="todos">Todos os Ambientes</option>
+            </select>
+          </div>
+
+          <!-- Filtro de Formato -->
+          <div class="select-chip-container">
+            <select id="filter-tipo" class="chip-select">
+              <option value="todos">Todos os Formatos</option>
+            </select>
+          </div>
+        </div>
+
+        <!-- Estatísticas discretas no topo direito -->
+        <div class="mini-stats">
+          <div class="mini-stat-box"><span id="stat-total">0</span> total</div>
+          <div class="mini-stat-box"><span id="stat-agendados" class="color-scheduled">0</span> agendados</div>
+          <div class="mini-stat-box"><span id="stat-backlog" class="color-backlog">0</span> no backlog</div>
+        </div>
+      </section>
+
+      <!-- SEÇÃO DO CALENDÁRIO (Estilo Google Calendar / Referência) -->
+      <section class="calendar-wrapper" id="calendar-export-area">
+        
+        <!-- Navegação do Calendário -->
+        <div class="calendar-top-bar">
+          <div class="calendar-title-area">
+            <h2 id="calendar-month-year" class="calendar-month-title">Julho 2026</h2>
+          </div>
+          
+          <div class="calendar-navigation-controls">
+            <button id="today-btn" class="pill-btn secondary">Hoje</button>
+            <div class="nav-arrow-group">
+              <button id="prev-month-btn" class="nav-arrow-btn" title="Mês anterior">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"></polyline></svg>
+              </button>
+              <button id="next-month-btn" class="nav-arrow-btn" title="Próximo mês">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"></polyline></svg>
+              </button>
+            </div>
+          </div>
+
+          <div class="calendar-legend-chips">
+            <span class="legend-chip"><span class="legend-color-dot carrossel"></span> Carrossel</span>
+            <span class="legend-chip"><span class="legend-color-dot story"></span> Story</span>
+            <span class="legend-chip"><span class="legend-color-dot reels"></span> Reels</span>
+            <span class="legend-chip"><span class="legend-color-dot real3d"></span> 3D x Real</span>
+            <span class="legend-chip"><span class="legend-color-dot postfeed"></span> Feed</span>
+            <span class="legend-chip"><span class="legend-color-dot detalhes"></span> Detalhes</span>
+          </div>
+        </div>
+
+        <!-- Grade Principal do Calendário -->
+        <div class="calendar-sheet">
+          <!-- Dias da semana -->
+          <div class="calendar-header-weekdays">
+            <div>Dom</div>
+            <div>Seg</div>
+            <div>Ter</div>
+            <div>Qua</div>
+            <div>Qui</div>
+            <div>Sex</div>
+            <div>Sáb</div>
+          </div>
+          <!-- Grade de dias -->
+          <div class="calendar-grid-cells" id="calendar-days-grid">
+            <!-- Renderizado dinamicamente -->
+          </div>
+        </div>
+      </section>
+
+    </main>
+  </div>
+
+  <!-- Modal de Detalhes do Post (Glassmorphism Light) -->
+  <div id="post-modal" class="modal">
+    <div class="modal-content glass-light">
+      <div class="modal-header">
+        <span class="modal-badge" id="modal-post-type">Carrossel</span>
+        <button id="close-modal-btn" class="close-btn">&times;</button>
+      </div>
+      <div class="modal-body">
+        <h2 id="modal-post-title">Ambiente: Sala</h2>
+        
+        <div class="modal-info-row">
+          <div class="info-item">
+            <span class="info-label">Data de Postagem</span>
+            <span class="info-value" id="modal-post-date">24/07/2026</span>
+          </div>
+          <div class="info-item">
+            <span class="info-label">Horário</span>
+            <span class="info-value" id="modal-post-time">--</span>
+          </div>
+          <div class="info-item">
+            <span class="info-label">Ambiente</span>
+            <span class="info-value" id="modal-post-ambiente">Sala</span>
+          </div>
+          <div class="info-item">
+            <span class="info-label">Campanha / Aba</span>
+            <span class="info-value" id="modal-post-aba">Reserva SC</span>
+          </div>
+        </div>
+
+        <div class="modal-actions-container">
+          <!-- Botão para abrir o documento de legenda -->
+          <a href="#" id="modal-doc-link" target="_blank" class="modal-action-card doc-card">
+            <div class="card-icon">
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line></svg>
+            </div>
+            <div class="card-info">
+              <h4>Legenda (Google Docs)</h4>
+              <p>Clique para ler e copiar o roteiro ou legenda do post</p>
+            </div>
+            <div class="card-arrow">
+              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 5"></polyline></svg>
+            </div>
+          </a>
+
+          <!-- Botão para abrir os arquivos do drive -->
+          <a href="#" id="modal-drive-link" target="_blank" class="modal-action-card drive-card">
+            <div class="card-icon">
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"></path></svg>
+            </div>
+            <div class="card-info">
+              <h4>Arquivos do Post (Google Drive)</h4>
+              <p>Acessar imagens, vídeos e mídias para publicação</p>
+            </div>
+            <div class="card-arrow">
+              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 5"></polyline></svg>
+            </div>
+          </a>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button id="close-modal-footer-btn" class="pill-btn secondary">Fechar</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>

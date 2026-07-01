@@ -1,0 +1,1487 @@
+/* ==========================================================================
+   Design System - Variáveis CSS (Tema Claro Premium / Estética SaaS)
+   ========================================================================== */
+:root {
+  /* Cores de Fundo */
+  --bg-primary: #f8fafc;       /* Cinza azulado muito claro (fundo principal) */
+  --bg-secondary: #ffffff;     /* Branco para cards e painéis */
+  --bg-sidebar: #f8fafc;       /* Barra lateral */
+  --bg-sidebar-active: #ffffff;
+  
+  /* Cores de Texto */
+  --text-primary: #0f172a;     /* Slate 900 - Escuro forte */
+  --text-secondary: #475569;   /* Slate 600 - Cinza médio */
+  --text-muted: #94a3b8;       /* Slate 400 - Cinza claro */
+  
+  /* Cores de Destaque */
+  --accent-color: #0f172a;     /* Pílulas/botões em preto para bater com a referência */
+  --accent-hover: #334155;      
+  --accent-light: rgba(15, 23, 42, 0.04);
+  
+  /* Cores Pastel dos Formatos (Mapeamento Planilha do Usuário) */
+  --color-carrossel: #b91c1c;       /* Vermelho - Texto */
+  --color-carrossel-bg: #fef2f2;    /* Vermelho - Fundo */
+  --color-carrossel-border: #fca5a5;/* Vermelho - Borda */
+  
+  --color-story: #b45309;           /* Laranja - Texto */
+  --color-story-bg: #fffbeb;        /* Laranja - Fundo */
+  --color-story-border: #fde68a;    /* Laranja - Borda */
+  
+  --color-reels: #047857;           /* Verde - Texto */
+  --color-reels-bg: #ecfdf5;        /* Verde - Fundo */
+  --color-reels-border: #a7f3d0;    /* Verde - Borda */
+  
+  --color-real3d: #1d4ed8;          /* Azul - Texto */
+  --color-real3d-bg: #eff6ff;       /* Azul - Fundo */
+  --color-real3d-border: #bfdbfe;   /* Azul - Borda */
+
+  --color-postfeed: #6d28d9;         /* Roxo - Texto */
+  --color-postfeed-bg: #faf5ff;      /* Roxo - Fundo */
+  --color-postfeed-border: #e9d5ff;  /* Roxo - Borda */
+
+  --color-detalhes: #be185d;         /* Rosa - Texto */
+  --color-detalhes-bg: #fdf2f8;      /* Rosa - Fundo */
+  --color-detalhes-border: #fbcfe8;  /* Rosa - Borda */
+  
+  --color-default: #475569;
+  --color-default-bg: #f1f5f9;
+  --color-default-border: #cbd5e1;
+
+  /* Status */
+  --color-agendado: #d97706;    
+  --color-publicado: #059669;   
+  --color-rascunho: #64748b;    
+
+  /* Efeitos e Bordas */
+  --border-color: #e2e8f0;     /* Slate 200 - Linhas muito finas */
+  --border-radius-sm: 8px;
+  --border-radius-md: 14px;
+  --border-radius-lg: 20px;
+  --box-shadow: 0 4px 20px -2px rgba(15, 23, 42, 0.05);
+  --box-shadow-hover: 0 10px 25px -5px rgba(15, 23, 42, 0.1);
+  --transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+  --font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+}
+
+/* ==========================================================================
+   Configurações Globais
+   ========================================================================== */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  background-color: var(--bg-primary);
+  color: var(--text-primary);
+  font-family: var(--font-family);
+  min-height: 100vh;
+  overflow: hidden;
+}
+
+/* Scrollbar Personalizada */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+::-webkit-scrollbar-track {
+  background: var(--bg-primary);
+}
+::-webkit-scrollbar-thumb {
+  background: #cbd5e1;
+  border-radius: 10px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #94a3b8;
+}
+
+/* ==========================================================================
+   Estrutura do Layout (Barra Lateral + Conteúdo)
+   ========================================================================== */
+.app-layout {
+  display: flex;
+  height: 100vh;
+  width: 100vw;
+  overflow: hidden;
+}
+
+/* Barra Lateral (Sidebar) */
+.app-sidebar {
+  width: 260px;
+  background-color: var(--bg-sidebar);
+  border-right: 1px solid var(--border-color);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: 24px;
+  flex-shrink: 0;
+}
+
+.sidebar-top {
+  display: flex;
+  flex-direction: column;
+  gap: 32px;
+}
+
+.sidebar-logo {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.logo-box {
+  width: 32px;
+  height: 32px;
+  background-color: var(--accent-color);
+  color: #ffffff;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.logo-text {
+  font-size: 1.05rem;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  color: var(--text-primary);
+}
+
+.sidebar-nav {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.nav-section-title {
+  font-size: 0.7rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  letter-spacing: 0.05em;
+  margin-bottom: 8px;
+  padding-left: 8px;
+}
+
+.nav-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 10px 14px;
+  border-radius: var(--border-radius-sm);
+  color: var(--text-secondary);
+  text-decoration: none;
+  font-size: 0.85rem;
+  font-weight: 500;
+  transition: var(--transition);
+  border: 1px solid transparent;
+}
+
+.nav-item:hover {
+  background-color: rgba(15, 23, 42, 0.03);
+  color: var(--text-primary);
+}
+
+.nav-item.active {
+  background-color: var(--bg-sidebar-active);
+  color: var(--text-primary);
+  border-color: var(--border-color);
+  box-shadow: var(--box-shadow);
+  font-weight: 600;
+}
+
+.nav-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--text-secondary);
+}
+
+.nav-item.active .nav-icon {
+  color: var(--accent-color);
+}
+
+.nav-badge {
+  margin-left: auto;
+  font-size: 0.7rem;
+  background-color: var(--accent-color);
+  color: #ffffff;
+  padding: 2px 7px;
+  border-radius: 20px;
+  font-weight: 700;
+}
+
+.nav-item.active .nav-badge {
+  background-color: var(--accent-color);
+}
+
+/* Perfil da Barra Lateral */
+.sidebar-profile {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding-top: 20px;
+  border-top: 1px solid var(--border-color);
+}
+
+.profile-avatar {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  overflow: hidden;
+  background-color: var(--border-color);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.avatar-circle {
+  font-size: 0.8rem;
+  font-weight: 700;
+  color: var(--text-secondary);
+}
+
+.profile-info {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.profile-name {
+  font-size: 0.82rem;
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+.profile-role {
+  font-size: 0.72rem;
+  color: var(--text-muted);
+}
+
+/* Area Principal */
+.app-content {
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  overflow: hidden;
+  padding: 30px;
+  min-width: 0;
+}
+
+/* Cabeçalho de Navegação */
+.content-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 24px;
+  flex-shrink: 0;
+}
+
+.breadcrumb {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.82rem;
+  font-weight: 500;
+  color: var(--text-muted);
+}
+
+.breadcrumb .separator {
+  color: #cbd5e1;
+  font-size: 0.7rem;
+}
+
+.breadcrumb .active {
+  color: var(--text-primary);
+  font-weight: 600;
+}
+
+.header-right-actions {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+/* Botões do Sistema */
+.pill-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 7px 16px;
+  border-radius: 30px;
+  font-size: 0.8rem;
+  font-weight: 600;
+  cursor: pointer;
+  border: 1px solid var(--border-color);
+  transition: var(--transition);
+}
+
+.pill-btn.primary {
+  background-color: var(--accent-color);
+  border-color: var(--accent-color);
+  color: #ffffff;
+}
+
+.pill-btn.primary:hover {
+  background-color: var(--accent-hover);
+  border-color: var(--accent-hover);
+}
+
+.pill-btn.secondary {
+  background-color: #ffffff;
+  color: var(--text-secondary);
+}
+
+.pill-btn.secondary:hover {
+  background-color: #f8fafc;
+  color: var(--text-primary);
+}
+
+/* ==========================================================================
+   Efeito de Botão "Flow Button" (Estilo Referência customizado)
+   ========================================================================== */
+.flow-btn {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  overflow: hidden;
+  border-radius: 100px;
+  border: 1.5px solid rgba(15, 23, 42, 0.4);
+  background-color: transparent;
+  padding: 8px 32px;
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: var(--text-primary);
+  cursor: pointer;
+  transition: all 600ms cubic-bezier(0.23, 1, 0.32, 1);
+  outline: none;
+  min-width: 120px;
+  justify-content: center;
+}
+
+.flow-btn:hover {
+  border-color: transparent;
+  color: #ffffff !important;
+  border-radius: 12px;
+}
+
+.flow-btn:active {
+  transform: scale(0.95);
+}
+
+/* Ícone da esquerda (entra no hover) */
+.flow-btn .icon-left {
+  position: absolute;
+  width: 14px;
+  height: 14px;
+  left: -25%;
+  z-index: 9;
+  stroke: #ffffff !important; /* Sempre branco para ficar visível sobre o fundo escuro do hover */
+  fill: none;
+  transition: all 800ms cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.flow-btn:hover .icon-left {
+  left: 14px;
+}
+
+/* Texto do botão */
+.flow-btn .btn-text {
+  position: relative;
+  z-index: 1;
+  transform: translateX(-6px);
+  transition: all 800ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.flow-btn:hover .btn-text {
+  transform: translateX(10px);
+}
+
+/* Círculo de fundo que se expande no hover */
+.flow-btn .circle-bg {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 10px;
+  height: 10px;
+  background-color: var(--accent-color); /* No caso, preto/escuro */
+  border-radius: 50%;
+  opacity: 0;
+  z-index: 0;
+  transition: all 800ms cubic-bezier(0.19, 1, 0.22, 1);
+}
+
+.flow-btn:hover .circle-bg {
+  width: 220px;
+  height: 220px;
+  opacity: 1;
+}
+
+/* Ícone da direita (sai no hover) */
+.flow-btn .icon-right {
+  position: absolute;
+  width: 14px;
+  height: 14px;
+  right: 14px;
+  stroke: var(--text-primary);
+  fill: none;
+  z-index: 9;
+  transition: all 800ms cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.flow-btn:hover .icon-right {
+  right: -25%;
+}
+
+.icon-btn-action {
+  background-color: #ffffff;
+  border: 1px solid var(--border-color);
+  color: var(--text-secondary);
+  cursor: pointer;
+  padding: 7px;
+  border-radius: 50%;
+  transition: var(--transition);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.icon-btn-action:hover {
+  color: var(--text-primary);
+  background-color: rgba(15, 23, 42, 0.03);
+}
+
+/* Dropdown de Exportação */
+.export-dropdown {
+  position: relative;
+  display: inline-block;
+}
+
+.export-dropdown-content {
+  display: none;
+  position: absolute;
+  right: 0;
+  background-color: #ffffff;
+  min-width: 200px;
+  box-shadow: var(--box-shadow);
+  border-radius: var(--border-radius-sm);
+  border: 1px solid var(--border-color);
+  z-index: 100;
+  overflow: hidden;
+  margin-top: 5px;
+}
+
+.export-dropdown-content a {
+  color: var(--text-primary);
+  padding: 10px 14px;
+  text-decoration: none;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 0.8rem;
+  transition: var(--transition);
+}
+
+.export-dropdown-content a:hover {
+  background-color: #f8fafc;
+}
+
+.export-dropdown:hover .export-dropdown-content {
+  display: block;
+}
+
+/* ==========================================================================
+   Painel de Filtros (Estilo Pílulas/Chips)
+   ========================================================================== */
+.control-panel {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+  margin-bottom: 24px;
+  flex-shrink: 0;
+}
+
+.search-wrapper {
+  position: relative;
+  width: 250px;
+}
+
+.search-glass {
+  position: absolute;
+  left: 14px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: var(--text-muted);
+  pointer-events: none;
+}
+
+.search-wrapper input {
+  width: 100%;
+  padding: 8px 12px 8px 38px;
+  border-radius: 30px;
+  border: 1px solid var(--border-color);
+  background-color: #ffffff;
+  color: var(--text-primary);
+  font-size: 0.8rem;
+  transition: var(--transition);
+}
+
+.search-wrapper input:focus {
+  outline: none;
+  border-color: var(--text-primary);
+  box-shadow: 0 0 0 2px rgba(15, 23, 42, 0.05);
+}
+
+.filters-chips {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.chip-label {
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: var(--text-secondary);
+}
+
+.select-chip-container {
+  position: relative;
+}
+
+.chip-select {
+  padding: 6px 14px;
+  border-radius: 30px;
+  border: 1px solid var(--border-color);
+  background-color: #ffffff;
+  color: var(--text-secondary);
+  font-size: 0.8rem;
+  cursor: pointer;
+  font-weight: 500;
+  transition: var(--transition);
+  outline: none;
+}
+
+.chip-select:focus, .chip-select:hover {
+  border-color: var(--text-primary);
+  color: var(--text-primary);
+}
+
+/* Mini Estatísticas */
+.mini-stats {
+  display: flex;
+  gap: 12px;
+}
+
+.mini-stat-box {
+  font-size: 0.72rem;
+  background-color: #ffffff;
+  padding: 4px 10px;
+  border-radius: 30px;
+  border: 1px solid var(--border-color);
+  color: var(--text-secondary);
+  font-weight: 500;
+}
+
+.mini-stat-box span {
+  font-weight: 700;
+  color: var(--text-primary);
+  margin-right: 2px;
+}
+
+.mini-stat-box span.color-scheduled { color: var(--color-agendado); }
+.mini-stat-box span.color-backlog { color: var(--color-rascunho); }
+
+/* ==========================================================================
+   Calendário (Google Calendar Style / Referência)
+   ========================================================================== */
+.calendar-wrapper {
+  flex-grow: 1;
+  background-color: var(--bg-secondary);
+  border-radius: var(--border-radius-md);
+  border: 1px solid var(--border-color);
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  overflow: hidden;
+  box-shadow: var(--box-shadow);
+}
+
+/* Barra superior interna do calendário */
+.calendar-top-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 18px 24px;
+  border-bottom: 1px solid var(--border-color);
+  flex-shrink: 0;
+}
+
+.calendar-title-area {
+  display: flex;
+  align-items: center;
+}
+
+.calendar-month-title {
+  font-size: 1.15rem;
+  font-weight: 700;
+  letter-spacing: -0.015em;
+  color: var(--text-primary);
+}
+
+.calendar-navigation-controls {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.nav-arrow-group {
+  display: flex;
+  border-radius: 30px;
+  overflow: hidden;
+  border: 1px solid var(--border-color);
+}
+
+.nav-arrow-btn {
+  padding: 6px 12px;
+  cursor: pointer;
+  border: none;
+  background-color: #ffffff;
+  color: var(--text-secondary);
+  transition: var(--transition);
+  display: flex;
+  align-items: center;
+}
+
+.nav-arrow-btn:first-child {
+  border-right: 1px solid var(--border-color);
+}
+
+.nav-arrow-btn:hover {
+  background-color: #f8fafc;
+  color: var(--text-primary);
+}
+
+.calendar-legend-chips {
+  display: flex;
+  gap: 10px;
+}
+
+.legend-chip {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 0.72rem;
+  font-weight: 500;
+  color: var(--text-secondary);
+}
+
+.legend-color-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+}
+.legend-color-dot.carrossel { background-color: var(--color-carrossel); }
+.legend-color-dot.story { background-color: var(--color-story); }
+.legend-color-dot.reels { background-color: var(--color-reels); }
+.legend-color-dot.real3d { background-color: var(--color-real3d); }
+.legend-color-dot.postfeed { background-color: var(--color-postfeed); }
+.legend-color-dot.detalhes { background-color: var(--color-detalhes); }
+
+/* Grade da Folha do Calendário */
+.calendar-sheet {
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+  min-height: 0;
+}
+
+/* Dias da Semana (Dom, Seg, Ter...) */
+.calendar-header-weekdays {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  text-align: center;
+  border-bottom: 1px solid var(--border-color);
+  background-color: #f8fafc;
+  flex-shrink: 0;
+}
+
+.calendar-header-weekdays div {
+  padding: 10px 0;
+  font-size: 0.72rem;
+  font-weight: 600;
+  color: var(--text-secondary);
+  text-transform: uppercase;
+  letter-spacing: 0.02em;
+}
+
+/* Grade de Células */
+.calendar-grid-cells {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  grid-template-rows: repeat(6, 1fr);
+  flex-grow: 1;
+  min-height: 0;
+}
+
+.calendar-day-cell {
+  border-right: 1px solid var(--border-color);
+  border-bottom: 1px solid var(--border-color);
+  padding: 8px;
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+  overflow: hidden;
+  position: relative;
+  background-color: #ffffff;
+  transition: var(--transition);
+}
+
+.calendar-day-cell:nth-child(7n) {
+  border-right: none;
+}
+
+.calendar-day-cell:nth-child(n+36) {
+  border-bottom: none;
+}
+
+.calendar-day-cell.other-month {
+  background-color: #f8fafc;
+}
+
+.calendar-day-cell.other-month .day-number {
+  color: var(--text-muted);
+}
+
+.day-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 6px;
+  flex-shrink: 0;
+}
+
+.day-number {
+  font-size: 0.78rem;
+  font-weight: 600;
+  width: 24px;
+  height: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  color: var(--text-secondary);
+}
+
+/* Destaque para o Dia de Hoje (Preto com Texto Branco estilo Referência) */
+.calendar-day-cell.today .day-number {
+  background-color: var(--accent-color);
+  color: #ffffff;
+  font-weight: 700;
+}
+
+.day-events {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  overflow-y: auto;
+  flex-grow: 1;
+  padding-right: 2px;
+}
+
+/* Cartões Compactos de Eventos */
+.calendar-event {
+  font-size: 0.7rem;
+  padding: 4px 8px;
+  border-radius: 6px;
+  cursor: pointer;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  font-weight: 600;
+  transition: var(--transition);
+  border: 1px solid transparent;
+}
+
+.calendar-event:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 2px 8px rgba(15, 23, 42, 0.08);
+}
+
+/* Estilos de Cores Pastel dos Eventos */
+.calendar-event.carrossel {
+  background-color: var(--color-carrossel-bg);
+  color: var(--color-carrossel);
+  border-color: var(--color-carrossel-border);
+}
+.calendar-event.story {
+  background-color: var(--color-story-bg);
+  color: var(--color-story);
+  border-color: var(--color-story-border);
+}
+.calendar-event.reels {
+  background-color: var(--color-reels-bg);
+  color: var(--color-reels);
+  border-color: var(--color-reels-border);
+}
+.calendar-event.real3d {
+  background-color: var(--color-real3d-bg);
+  color: var(--color-real3d);
+  border-color: var(--color-real3d-border);
+}
+.calendar-event.postfeed {
+  background-color: var(--color-postfeed-bg);
+  color: var(--color-postfeed);
+  border-color: var(--color-postfeed-border);
+}
+.calendar-event.detalhes {
+  background-color: var(--color-detalhes-bg);
+  color: var(--color-detalhes);
+  border-color: var(--color-detalhes-border);
+}
+.calendar-event.default {
+  background-color: var(--color-default-bg);
+  color: var(--color-default);
+  border-color: var(--color-default-border);
+}
+
+/* ==========================================================================
+   Gaveta Lateral: Banco de Ideias (Backlog Drawer)
+   ========================================================================== */
+.backlog-drawer {
+  position: fixed;
+  top: 0;
+  right: -420px; /* Escondido inicialmente */
+  width: 400px;
+  height: 100vh;
+  background-color: #ffffff;
+  box-shadow: -10px 0 40px rgba(15, 23, 42, 0.08);
+  border-left: 1px solid var(--border-color);
+  z-index: 1500;
+  transition: right 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+  display: flex;
+  flex-direction: column;
+}
+
+.backlog-drawer.open {
+  right: 0;
+}
+
+.drawer-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 24px;
+  border-bottom: 1px solid var(--border-color);
+  flex-shrink: 0;
+}
+
+.drawer-header-left {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.drawer-header h2 {
+  font-size: 1.05rem;
+  font-weight: 700;
+}
+
+.drawer-body {
+  padding: 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  overflow-y: auto;
+  flex-grow: 1;
+}
+
+.drawer-description {
+  font-size: 0.78rem;
+  color: var(--text-secondary);
+  line-height: 1.4;
+  margin-bottom: 5px;
+}
+
+.backlog-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding-bottom: 20px;
+}
+
+/* Cartões do Backlog */
+.post-card {
+  padding: 14px;
+  border-radius: var(--border-radius-sm);
+  cursor: pointer;
+  transition: var(--transition);
+  border: 1px solid transparent;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.post-card:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--box-shadow-hover);
+}
+
+.post-card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.post-card-type {
+  font-size: 0.65rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  padding: 2px 7px;
+  border-radius: 4px;
+}
+
+.post-card-time {
+  font-size: 0.7rem;
+  color: var(--text-secondary);
+  font-weight: 600;
+}
+
+.post-card-title {
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--text-primary);
+  line-height: 1.3;
+}
+
+.post-card-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 0.72rem;
+  border-top: 1px dashed rgba(15, 23, 42, 0.05);
+  padding-top: 8px;
+}
+
+.post-card-ambiente {
+  color: var(--text-secondary);
+  font-weight: 500;
+}
+
+.post-card-links {
+  display: flex;
+  gap: 6px;
+  color: var(--text-muted);
+}
+
+.post-card-links svg {
+  width: 14px;
+  height: 14px;
+}
+
+/* Cores de Fundo nos Cards do Backlog */
+.post-card.carrossel {
+  background-color: var(--color-carrossel-bg);
+  border-color: var(--color-carrossel-border);
+}
+.post-card.carrossel .post-card-type {
+  background-color: rgba(239, 68, 68, 0.1);
+  color: var(--color-carrossel);
+}
+
+.post-card.story {
+  background-color: var(--color-story-bg);
+  border-color: var(--color-story-border);
+}
+.post-card.story .post-card-type {
+  background-color: rgba(245, 158, 11, 0.1);
+  color: var(--color-story);
+}
+
+.post-card.reels {
+  background-color: var(--color-reels-bg);
+  border-color: var(--color-reels-border);
+}
+.post-card.reels .post-card-type {
+  background-color: rgba(16, 185, 129, 0.1);
+  color: var(--color-reels);
+}
+
+.post-card.real3d {
+  background-color: var(--color-real3d-bg);
+  border-color: var(--color-real3d-border);
+}
+.post-card.real3d .post-card-type {
+  background-color: rgba(59, 130, 246, 0.1);
+  color: var(--color-real3d);
+}
+
+.post-card.postfeed {
+  background-color: var(--color-postfeed-bg);
+  border-color: var(--color-postfeed-border);
+}
+.post-card.postfeed .post-card-type {
+  background-color: rgba(168, 85, 247, 0.1);
+  color: var(--color-postfeed);
+}
+
+.post-card.detalhes {
+  background-color: var(--color-detalhes-bg);
+  border-color: var(--color-detalhes-border);
+}
+.post-card.detalhes .post-card-type {
+  background-color: rgba(236, 72, 153, 0.1);
+  color: var(--color-detalhes);
+}
+
+.post-card.default {
+  background-color: var(--color-default-bg);
+  border-color: var(--color-default-border);
+}
+.post-card.default .post-card-type {
+  background-color: rgba(148, 163, 184, 0.1);
+  color: var(--color-default);
+}
+
+/* ==========================================================================
+   Painel de Configurações Lateral
+   ========================================================================== */
+.config-panel {
+  position: fixed;
+  top: 0;
+  right: -420px;
+  width: 400px;
+  height: 100vh;
+  background-color: #ffffff;
+  box-shadow: -10px 0 40px rgba(15, 23, 42, 0.08);
+  border-left: 1px solid var(--border-color);
+  z-index: 1500;
+  transition: right 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+  display: flex;
+  flex-direction: column;
+}
+
+.config-panel.open {
+  right: 0;
+}
+
+.config-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 24px;
+  border-bottom: 1px solid var(--border-color);
+}
+
+.config-header h3 {
+  font-size: 1.05rem;
+  font-weight: 700;
+}
+
+.config-body {
+  padding: 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  overflow-y: auto;
+}
+
+.input-group {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.input-group label {
+  font-size: 0.78rem;
+  color: var(--text-secondary);
+  font-weight: 600;
+}
+
+.input-group input {
+  padding: 9px 12px;
+  border-radius: var(--border-radius-sm);
+  border: 1px solid var(--border-color);
+  background-color: #ffffff;
+  color: var(--text-primary);
+  font-size: 0.82rem;
+  transition: var(--transition);
+}
+
+.input-group input:focus {
+  outline: none;
+  border-color: var(--text-primary);
+}
+
+.instructions {
+  background-color: var(--bg-primary);
+  border-radius: var(--border-radius-sm);
+  border: 1px solid var(--border-color);
+  padding: 15px;
+}
+
+.instructions h4 {
+  font-size: 0.8rem;
+  margin-bottom: 8px;
+  color: var(--text-primary);
+}
+
+.instructions ol {
+  font-size: 0.75rem;
+  color: var(--text-secondary);
+  padding-left: 15px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.icon-btn {
+  background: none;
+  border: none;
+  color: var(--text-secondary);
+  font-size: 1.5rem;
+  cursor: pointer;
+  line-height: 1;
+}
+
+/* ==========================================================================
+   Modais (Estilo Glassmorphism Light)
+   ========================================================================== */
+.modal {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(15, 23, 42, 0.4);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  z-index: 2000;
+  justify-content: center;
+  align-items: center;
+  padding: 20px;
+}
+
+.modal.open {
+  display: flex;
+}
+
+.modal-content.glass-light {
+  background-color: rgba(255, 255, 255, 0.9);
+  border: 1px solid rgba(255, 255, 255, 0.5);
+  box-shadow: 0 20px 50px rgba(15, 23, 42, 0.15);
+  border-radius: var(--border-radius-lg);
+  max-width: 500px;
+  width: 100%;
+  animation: modalFadeIn 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+@keyframes modalFadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(15px) scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+.modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px;
+  border-bottom: 1px solid var(--border-color);
+}
+
+.modal-badge {
+  font-size: 0.65rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  padding: 3px 8px;
+  border-radius: 4px;
+}
+
+.modal-badge.carrossel { background-color: var(--color-carrossel-bg); color: var(--color-carrossel); }
+.modal-badge.story { background-color: var(--color-story-bg); color: var(--color-story); }
+.modal-badge.reels { background-color: var(--color-reels-bg); color: var(--color-reels); }
+.modal-badge.real3d { background-color: var(--color-real3d-bg); color: var(--color-real3d); }
+.modal-badge.postfeed { background-color: var(--color-postfeed-bg); color: var(--color-postfeed); }
+.modal-badge.detalhes { background-color: var(--color-detalhes-bg); color: var(--color-detalhes); }
+
+.close-btn {
+  background: none;
+  border: none;
+  color: var(--text-secondary);
+  font-size: 1.4rem;
+  cursor: pointer;
+}
+
+.close-btn:hover {
+  color: var(--text-primary);
+}
+
+.modal-body {
+  padding: 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.modal-body h2 {
+  font-size: 1.25rem;
+  font-weight: 700;
+}
+
+.modal-info-row {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 16px;
+}
+
+.info-item {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.info-label {
+  font-size: 0.65rem;
+  color: var(--text-muted);
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.02em;
+}
+
+.info-value {
+  font-size: 0.88rem;
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+/* Cards de Ação no Modal */
+.modal-actions-container {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-top: 10px;
+}
+
+.modal-action-card {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  padding: 12px 16px;
+  border-radius: var(--border-radius-sm);
+  text-decoration: none;
+  color: inherit;
+  border: 1px solid var(--border-color);
+  transition: var(--transition);
+  background-color: #ffffff;
+}
+
+.modal-action-card:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(15, 23, 42, 0.04);
+  border-color: var(--text-muted);
+}
+
+.modal-action-card .card-icon {
+  width: 36px;
+  height: 36px;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.modal-action-card .card-info {
+  flex-grow: 1;
+}
+
+.modal-action-card h4 {
+  font-size: 0.82rem;
+  font-weight: 600;
+  margin-bottom: 2px;
+}
+
+.modal-action-card p {
+  font-size: 0.7rem;
+  color: var(--text-secondary);
+}
+
+.modal-action-card .card-arrow {
+  color: var(--text-muted);
+}
+
+/* Cores dos Links */
+.doc-card .card-icon {
+  background-color: #eff6ff;
+  color: #2563eb;
+}
+.drive-card .card-icon {
+  background-color: #ecfdf5;
+  color: #059669;
+}
+
+.modal-footer {
+  padding: 16px 24px;
+  border-top: 1px solid var(--border-color);
+  display: flex;
+  justify-content: flex-end;
+}
+
+/* ==========================================================================
+   ESTILOS DE IMPRESSÃO (@media print) - Exportação para PDF
+   ========================================================================== */
+@media print {
+  @page {
+    size: A4 landscape;
+    margin: 0.8cm;
+  }
+  
+  body {
+    background-color: #ffffff !important;
+    color: #000000 !important;
+    font-size: 11pt;
+    height: auto;
+  }
+  
+  .app-sidebar,
+  .content-header,
+  .control-panel,
+  .backlog-drawer,
+  .config-panel,
+  .modal,
+  .calendar-navigation-controls,
+  .export-dropdown {
+    display: none !important;
+  }
+  
+  .app-layout {
+    display: block !important;
+    height: auto !important;
+  }
+  
+  .app-content {
+    padding: 0 !important;
+    height: auto !important;
+  }
+  
+  .calendar-wrapper {
+    border: none !important;
+    box-shadow: none !important;
+    background-color: #ffffff !important;
+  }
+  
+  .calendar-top-bar {
+    border-bottom: 2px solid #000000 !important;
+    padding: 8px 0 !important;
+    margin-bottom: 15px !important;
+    justify-content: center !important;
+    flex-direction: column !important;
+    gap: 10px !important;
+  }
+  
+  .calendar-month-title {
+    font-size: 18pt !important;
+    text-align: center !important;
+  }
+  
+  .calendar-top-bar::before {
+    content: "PROGRAMAÇÃO DE POSTAGENS - ALÊ ROVITO";
+    display: block;
+    font-size: 13pt;
+    font-weight: bold;
+    text-align: center;
+    margin-bottom: 4px;
+    letter-spacing: 0.05em;
+  }
+  
+  .calendar-legend-chips {
+    justify-content: center !important;
+  }
+  
+  .legend-chip {
+    color: #333333 !important;
+  }
+  
+  .legend-color-dot {
+    border: 1px solid #000000 !important;
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+  
+  .calendar-sheet {
+    border: 1px solid #000000 !important;
+  }
+  
+  .calendar-header-weekdays {
+    border-bottom: 1px solid #000000 !important;
+    background-color: #f1f5f9 !important;
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+  
+  .calendar-header-weekdays div {
+    color: #000000 !important;
+    font-weight: bold !important;
+    padding: 6px 0 !important;
+  }
+  
+  .calendar-grid-cells {
+    grid-template-rows: repeat(6, 110px) !important;
+  }
+  
+  .calendar-day-cell {
+    border-right: 1px solid #000000 !important;
+    border-bottom: 1px solid #000000 !important;
+    background-color: #ffffff !important;
+    min-height: 110px !important;
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+  
+  .calendar-day-cell.other-month {
+    background-color: #f8fafc !important;
+  }
+  
+  .day-number {
+    color: #000000 !important;
+  }
+  
+  .calendar-day-cell.today .day-number {
+    background-color: #e2e8f0 !important;
+    color: #000000 !important;
+    border: 1px solid #000000 !important;
+  }
+  
+  .calendar-event {
+    font-size: 8pt !important;
+    border: 1px solid #94a3b8 !important;
+    padding: 3px 6px !important;
+    margin-bottom: 2px !important;
+    white-space: normal !important;
+    word-break: break-all !important;
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+  
+  /* Cores de Impressão */
+  .calendar-event.carrossel { background-color: #ffe4e6 !important; color: #9f1239 !important; border-left: 3px solid #ef4444 !important; }
+  .calendar-event.story { background-color: #fef3c7 !important; color: #92400e !important; border-left: 3px solid #f59e0b !important; }
+  .calendar-event.reels { background-color: #d1fae5 !important; color: #065f46 !important; border-left: 3px solid #10b981 !important; }
+  .calendar-event.real3d { background-color: #dbeafe !important; color: #1e40af !important; border-left: 3px solid #3b82f6 !important; }
+  .calendar-event.postfeed { background-color: #f3e8ff !important; color: #6b21a8 !important; border-left: 3px solid #a855f7 !important; }
+  .calendar-event.detalhes { background-color: #fce7f3 !important; color: #9d174d !important; border-left: 3px solid #ec4899 !important; }
+}
